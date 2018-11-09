@@ -1,0 +1,74 @@
+body{
+    font-family: 'Reenie Beanie', cursive; 
+    background-image: url("https://cdn.hipwallpaper.com/i/7/52/HbSf5I.jpg");
+    background-repeat: cover;
+    
+    background-position: center; 
+    background-size: cover;
+}
+
+h1{
+    font-size: 10em;
+    margin: auto;
+    text-align: center;
+}
+img{
+    width: 90%;
+    height: 90%;
+}
+.container{
+   
+    bottom: 0;
+    width: 100%;
+    
+    
+}
+.moveUp{
+    margin-top: -2em;
+}
+#word{
+   width: 80%;
+  
+    margin:auto;
+}
+
+.letter{
+    display: inline-block;
+    
+    margin-left: -.8em;
+    min-width: 1em;
+    text-align: center;
+
+}
+.stuff h2{
+    font-size: 4em; 
+}
+#usedLetters div{
+ display: inline;
+
+ font-size: 4em;
+}
+.overlay{
+    display: inline;
+    
+    height: 10em;
+    width: 10em;
+    margin-right: 1em;
+    
+    font-size: 6em;
+    
+
+   
+}
+.hide{
+    opacity: 0; 
+ }
+/* .letter:hover {
+    opacity: 1;
+} */
+
+@media only screen and (max-width: 640px){
+    .overlay{
+        font-size: 3em;
+    }
+}

@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO"
+        crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css?family=Indie+Flower|Nothing+You+Could+Do|Reenie+Beanie" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="./assets/css/style.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <!-- Title -->
+    <header>
+        <h1>Hang Man</h1>
+    </header>
+
+    <!-- Random Word Placeholder  -->
+    <div class="container mt-4">
+        <div class="col-md-12" id="word"></div>
+    </div>
+
+
+    <div class="container">
+        <div class="row">
+            <!-- Image Placeholder -->
+            <div class="col-md-6">
+                <img id="pic" src="./assets/images/h1.png" />
+            </div>
+            <!-- Used letter Placeholder -->
+
+            <div class="col-md-6 stuff">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <h2> Wins: <span id="winPH"></span>|</h2>
+                    </div>
+                    <div class="col-xs-6">
+                        <h2> Losses: <span id="lossesPH"></span> </h2>
+                    </div>
+                    <h2> Used Letters </h2>
+
+                </div>
+
+                <div class="row ">
+
+                    <div class="row" id="usedLetters">
+                    </div>
+                </div>
+                <div class="row">
+                    <h1 Id="WinnerGUI" class="hide">! Winner !</h1>
+
+                </div>
+                <div class="row hide " Id="newGame">
+                    <h2> New Game?</h2>
+                    <div class="ml-5">
+                        <h2>Yes</h2>
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+        crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
+        crossorigin="anonymous"></script>
+
+    <script>
+
+        // Var List 
+        var wordHolder = document.getElementById("word");
+        var usedHolder = document.getElementById("usedLetters");
+        var hPic = document.getElementById("pic");
+        var winPH = document.getElementById("winPH");
+        var lossesPH = document.getElementById("lossesPH");
+        var mistakes = 0;
+        var newGameGUI = document.getElementById("newGame");
+        var winnerGUI = document.getElementById("WinnerGUI");
+        var wins = 0;
+        var losses = 0;
+       
+        var wordBank = [
+            "hop", "dart", "race",
+            "spy", "agree", "peer","first", "aid" , "fold"
+        ];
+        var CantUse = [
+
+        ];
+
+
+
+
+        var wordChosen = "placeHolder";
+        var lengthOfWord = 100;
+
+        winPH.textContent = wins;
+        lossesPH.textContent = losses;
+
+        var changePic = function () {
+
+           
+
+
+            if (mistakes == 0) {
+                hPic.src = "./assets/images/h1.png"
+            }
+            if (mistakes == 1) {
+                hPic.src = "./assets/images/h2.png";
+            }
+            if (mistakes == 2) {
+                hPic.src = "./assets/images/h3.png";
+            }
+            if (mistakes == 3) {
+                hPic.src = "./assets/images/h4.png";
+            }
+            if (mistakes == 4) {
+                hPic.src = "./assets/images/h5.png";
+            }
+            if (mistakes == 5) {
+                hPic.src = "./assets/images/h6.png";
+            }
+            if (mistakes == 6) {
+                hPic.src = "./assets/images/h7.png";
+            }
+            if (mistakes == 7) {
+                hPic.src = "./assets/images/h8.png";
+            }
+            if (mistakes == 8) {
+                hPic.src = "./assets/images/h9.png";
+            }
+            if (mistakes == 9) {
+                hPic.src = "./assets/images/Full.png";
+                losses++;
+                winnerGUI.textContent = "! Loser !"
+                winnerGUI.classList.remove("hide");
+                newGameGUI.classList.remove("hide");
+
+            }
+        }
+
+        var chooseAWord = function () {
+            var randomNum = Math.floor(Math.random() * wordBank.length);
+            wordChosen = wordBank[randomNum];
+            lengthOfWord = wordChosen.length;
+            wordHolder.innerHTML = " ";
+
+
+            for (i = 0; i < wordChosen.length; i++) {
+
+                var newLetter = document.createElement("div");
+                newLetter.className = "overlay";
+                newLetter.textContent = "_";
+                var Subelement = document.createElement("div")
+                Subelement.className = " letter " + " hide ";
+                Subelement.id = "num" + i;
+                Subelement.textContent = wordChosen.charAt(i);
+                newLetter.appendChild(Subelement);
+                wordHolder.append(newLetter);
+
+            }
+            changePic();
+        }
+        chooseAWord();
+
+        document.onkeyup = function (event) {
+
+            var keyPressed = event.key;
+            var wasTheirALetter = false;
+            var letterPassed = false;
+            var PassOrFail = false;
+
+            console.log("Key Pressed: " + keyPressed);
+
+            //
+            var letterCheck = function () {
+                for (i = 0; i < wordChosen.length; i++) {
+
+                    var myElement = document.getElementById("num" + i);
+
+                    if (keyPressed == myElement.innerHTML) {
+                        myElement.classList.remove("hide");
+
+                        wasTheirALetter = true;
+
+                        lengthOfWord--;
+
+                    }
+                    
+
+
+                }
+            }
+
+            for (j = 0; j < CantUse.length+1; j++) {
+                console.log("Key Pressed : " + keyPressed + " Array Check: " + CantUse[j]);
+                console.log("--------------");
+
+                if (keyPressed == CantUse[j]) {
+                    
+                   
+                    PassOrFail = true;
+                    wasTheirALetter = true;
+                    j = 100;
+
+                    // do Nothing
+                    
+                    
+                } else {
+                    
+                   
+                }
+
+                
+
+            }
+            console.log(PassOrFail);
+            if ( PassOrFail == false){
+                letterCheck();
+            }  else
+            {
+                alert("Letter "+ keyPressed + " has been used!");
+            }
+
+            CantUse.push(keyPressed);
+
+           
+            // console.log(letterPassed);
+
+
+
+         
+            if (wasTheirALetter == false) {
+                var newLetter = document.createElement("div");
+                newLetter.textContent = keyPressed ;
+                newLetter.className = "col-sm-1";
+                usedHolder.append(newLetter);
+                mistakes += 1;
+                letterCheck();
+                console.log(CantUse);
+
+
+            } else {
+                
+                console.log(CantUse);
+
+            }
+
+            // console.log("mistakes: " + mistakes);
+            if (lengthOfWord == 0) {
+
+
+                // You Won The Game
+
+                wins++;
+                winnerGUI.textContent = "! Winner !"
+                winnerGUI.classList.remove("hide");
+                newGameGUI.classList.remove("hide");
+
+
+
+            }
+
+
+            changePic();
+
+            // console.log(lengthOfWord);
+            winPH.textContent = wins;
+            lossesPH.textContent = losses;
+
+            //
+
+        }
+
+
+
+        newGameGUI.onmouseup = function () {
+            CantUse = [];
+            wordHolder.innerHTML = " ";
+            winnerGUI.classList.add("hide");
+            newGameGUI.classList.add("hide");
+            usedHolder.innerHTML = "";
+            mistakes = 0;
+            chooseAWord();
+
+        };
+
+
+
+
+
+    </script>
+
+</body>
+
+</html>
