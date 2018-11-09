@@ -9,7 +9,13 @@
    var winnerGUI = document.getElementById("WinnerGUI");
    var wins = 0;
    var losses = 0;
-  
+   var gAudio = document.getElementById("gAudio"); 
+   var bAudio = document.getElementById("bAudio"); 
+   var wAudio = document.getElementById("wAudio"); 
+   var lAudio = document.getElementById("lAudio"); 
+   var ngAudio = document.getElementById("ngAudio"); 
+   var eAduio = document.getElementById("eAudio"); 
+   var gameEnded = false;
    var wordBank = [
        "hop", "dart", "race",
        "spy", "agree", "peer","first", "aid" , "fold"
@@ -60,21 +66,25 @@
            hPic.src = "./assets/images/h9.png";
        }
        if (mistakes == 9) {
+            gameEnded = true;
            hPic.src = "./assets/images/Full.png";
            losses++;
            winnerGUI.textContent = "! Loser !"
            winnerGUI.classList.remove("hide");
            newGameGUI.classList.remove("hide");
+           lAudio.play();
+          
 
        }
    }
 
    var chooseAWord = function () {
        var randomNum = Math.floor(Math.random() * wordBank.length);
+       CantUse = [];
        wordChosen = wordBank[randomNum];
        lengthOfWord = wordChosen.length;
        wordHolder.innerHTML = " ";
-
+       
 
        for (i = 0; i < wordChosen.length; i++) {
 
@@ -100,6 +110,11 @@
        var letterPassed = false;
        var PassOrFail = false;
 
+       if ( (keyPressed == "Enter") && (gameEnded == true)){
+        
+        newGameYO();
+       
+       }
        console.log("Key Pressed: " + keyPressed);
 
        //
@@ -114,7 +129,8 @@
                    wasTheirALetter = true;
 
                    lengthOfWord--;
-
+                   gAudio.currentTime = 0;
+                    gAudio.play();
                }
                
 
@@ -149,6 +165,7 @@
            letterCheck();
        }  else
        {
+           eAduio.play();
            alert("Letter "+ keyPressed + " has been used!");
        }
 
@@ -161,14 +178,23 @@
 
     
        if (wasTheirALetter == false) {
+           if (keyPressed == "Enter"){
+            // Do nothing 
+           }else{
            var newLetter = document.createElement("div");
            newLetter.textContent = keyPressed ;
            newLetter.className = "col-sm-1";
+        //    if (newLetter.tabIndex == "Enter"){
+        //     newLetter.className= "col-sm-1" + " hide ";
+        //    }
+
            usedHolder.append(newLetter);
            mistakes += 1;
            letterCheck();
            console.log(CantUse);
-
+           bAudio.currentTime = 0;
+           bAudio.play();
+        }
 
        } else {
            
@@ -181,12 +207,13 @@
 
 
            // You Won The Game
-
+            gameEnded = true;
+            wAudio.play();
            wins++;
            winnerGUI.textContent = "! Winner !"
            winnerGUI.classList.remove("hide");
            newGameGUI.classList.remove("hide");
-
+       
 
 
        }
@@ -202,15 +229,20 @@
 
    }
 
-
+   var newGameYO = function(){
+    ngAudio.play();
+    
+    wordHolder.innerHTML = " ";
+    winnerGUI.classList.add("hide");
+    newGameGUI.classList.add("hide");
+    usedHolder.innerHTML = "";
+    mistakes = 0;
+    CantUse = [];
+    chooseAWord();
+   
+   }
 
    newGameGUI.onmouseup = function () {
-       CantUse = [];
-       wordHolder.innerHTML = " ";
-       winnerGUI.classList.add("hide");
-       newGameGUI.classList.add("hide");
-       usedHolder.innerHTML = "";
-       mistakes = 0;
-       chooseAWord();
+       newGameYO();
 
    };
